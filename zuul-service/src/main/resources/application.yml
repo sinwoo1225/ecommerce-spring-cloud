@@ -1,0 +1,19 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: my-zuul-service
+
+ribbon:
+  eureka:
+    enabled: false
+
+zuul:
+  routes:
+    first-service:
+      path: /first-service/**
+      uri: http://localhost:8081
+    second-service:
+      path: /second-service/**
+      uri: http://localhost:8082
