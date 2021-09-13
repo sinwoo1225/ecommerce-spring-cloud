@@ -2,12 +2,14 @@ package siru.userservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import siru.userservice.dto.UserDto;
 import siru.userservice.jpa.UserEntity;
 import siru.userservice.jpa.UserRepository;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
@@ -29,4 +31,22 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(userEntity, UserDto.class);
     }
 
+    @Override
+    public UserDto getUserByUserId(String userId) {
+        UserEntity userEntity = userRepository.findByUserId(userId);
+
+        if(userEntity == null) {
+            throw new UsernameNotFoundException("User Not Found");
+        }
+
+        UserDto userDto = modelMapper.map(userEntity, UserDto.class);
+        userDto.setOrderList(new ArrayList<>());
+
+        return userDto;
+    }
+
+    @Override
+    public Iterable<UserEntity> getUserByAll() {
+        return userRepository.findAll();
+    }
 }

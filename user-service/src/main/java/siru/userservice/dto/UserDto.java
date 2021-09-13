@@ -1,8 +1,10 @@
 package siru.userservice.dto;
 
 import lombok.Data;
+import siru.userservice.vo.ResponseOrder;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class UserDto {
@@ -18,4 +20,6 @@ public class UserDto {
     private Date createAt;
 
     private String encryptedPwd;
+
+    private List<ResponseOrder> orderList;
 }
