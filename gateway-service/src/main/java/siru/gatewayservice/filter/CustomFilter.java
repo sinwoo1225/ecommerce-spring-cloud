@@ -25,7 +25,7 @@ public class CustomFilter extends AbstractGatewayFilterFactory<CustomFilter.Conf
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
-            log.info("Custom PRE Filter Request ID -> {}, Path -> {}", request.getId(), request.getPath());
+            log.info("Custom PRE Filter Request ID -> {}, Path ->  {}", request.getId(), request.getPath());
 
             // Custom POST Filter
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
@@ -35,7 +35,7 @@ public class CustomFilter extends AbstractGatewayFilterFactory<CustomFilter.Conf
         };
     }
 
-    public static class Config {
+    static class Config {
         // Put The Configuration
     }
 }

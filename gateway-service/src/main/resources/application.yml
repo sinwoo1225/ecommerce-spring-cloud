@@ -54,3 +54,11 @@ spring:
             - AddRequestHeader=catalog-request, catalog-reqeust-header
             - AddResponseHeader=catalog-response, catalog-response-header
             - CustomFilter
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/order-service/**
+          filters:
+            - AddRequestHeader=order-request, order-reqeust-header
+            - AddResponseHeader=order-response, order-response-header
+            - CustomFilter
