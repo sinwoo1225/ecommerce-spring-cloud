@@ -26,3 +26,10 @@ eureka:
 greeting:
   message: Welcome to The Simple Service
 
+logging:
+  level:
+    siru.userservice: DEBUG
+
+token:
+  expiration_time: 8640000
+  secret: ojma2#$kmgomasdz!23sd42@4378Sdvbcbmk
