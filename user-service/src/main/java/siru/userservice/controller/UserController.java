@@ -38,6 +38,7 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser user) {
+        log.info("@@@");
         UserDto userDto = modelMapper.map(user, UserDto.class);
         userService.createUser(userDto);
 

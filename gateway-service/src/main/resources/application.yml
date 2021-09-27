@@ -62,6 +62,7 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+#            - AuthorizationHeaderFilter
 #        - id: user-service
 #          uri: lb://USER-SERVICE
 #          predicates:
@@ -86,3 +87,7 @@ spring:
             - AddRequestHeader=order-request, order-reqeust-header
             - AddResponseHeader=order-response, order-response-header
             - CustomFilter
+
+token:
+  expiration_time: 8640000
+  secret: ojma2#$kmgomasdz!23sd42@4378Sdvbcbmk
