@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  queue:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "9000:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=siru
+      - RABBITMQ_DEFAULT_PASS=siru@dev1
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=ecommerce
+      - POSTGRES_USER=siru
+      - POSTGRES_PASSWORD=siru@dev1
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
