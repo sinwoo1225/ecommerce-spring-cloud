@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: user-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: siru
+    password: siru@dev1
   h2:
     console:
       enabled: true
@@ -34,7 +39,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans
+        include: refresh, health, beans, busrefresh
 
 # config 서버를 쓰기 때문에 불필요
 #token:

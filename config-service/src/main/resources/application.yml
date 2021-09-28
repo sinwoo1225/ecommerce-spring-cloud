@@ -4,8 +4,22 @@ server:
 spring:
   application:
     name: config-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: siru
+    password: siru@dev1
   cloud:
     config:
       server:
         git:
-          uri: /Users/siru/develop/java_workspace/ecommerce-local-config
+          # ?? ?? uri: file:///Users/siru/develop/java_workspace/ecommerce-local-config
+          uri: https://github.com/sinwoo1225/cloud-config.git
+          # username: [git username]
+          # password: [git password]
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, busrefresh
