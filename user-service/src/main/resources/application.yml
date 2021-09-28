@@ -30,6 +30,13 @@ logging:
   level:
     siru.userservice: DEBUG
 
-token:
-  expiration_time: 8640000
-  secret: ojma2#$kmgomasdz!23sd42@4378Sdvbcbmk
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans
+
+# config 서버를 쓰기 때문에 불필요
+#token:
+#  expiration_time: 8640000
+#  secret: ojma2#$kmgomasdz!23sd42@4378Sdvbcbmk
