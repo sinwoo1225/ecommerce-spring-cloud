@@ -58,7 +58,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             resultValue = false;
         }
 
-        if (StringUtils.isNotBlank(subject)) {
+        if (StringUtils.isBlank(subject)) {
             resultValue = false;
         }
 

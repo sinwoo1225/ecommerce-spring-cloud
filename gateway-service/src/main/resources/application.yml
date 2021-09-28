@@ -57,6 +57,14 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
+            - Path=/user-service/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
             - Path=/user-service/**
             - Method=GET
           filters:
@@ -88,6 +96,13 @@ spring:
             - AddResponseHeader=order-response, order-response-header
             - CustomFilter
 
-token:
-  expiration_time: 8640000
-  secret: ojma2#$kmgomasdz!23sd42@4378Sdvbcbmk
+# config server를 사용하기 때문에 필요없음
+# token:
+#  expiration_time: 8640000
+#  secret: ojma2#$kmgomasdz!23sd42@4378Sdvbcbmk
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, refresh, health, beans, httpTrace
