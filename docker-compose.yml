@@ -1,7 +1,10 @@
 version: '3.8'
 
+networks:
+  dev-net:
+
 services:
-  queue:
+  rabbitmq:
     image: rabbitmq:management
     ports:
       - "5672:5672"
@@ -9,12 +12,39 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=siru
       - RABBITMQ_DEFAULT_PASS=siru@dev1
-  db:
-    image: postgres
+  
+  mariadb:
+    image: mariadb
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     ports:
-      - "5432:5432"
+      - "3306:3306"
     environment:
-      - POSTGRES_DB=ecommerce
-      - POSTGRES_USER=siru
-      - POSTGRES_PASSWORD=siru@dev1
-      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+      - MARIADB_ROOT_PASSWORD=siru@dev1
+      
+  zookeeper:
+    image: wurstmeister/zookeeper:3.4.6
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+    networks:
+      - dev-net
+
+  kafka:
+    image: wurstmeister/kafka:2.13-2.7.0
+    container_name: kafka
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    networks:
+      - dev-net
