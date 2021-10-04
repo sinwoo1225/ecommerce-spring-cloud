@@ -1,0 +1,18 @@
+FROM azul/zulu-openjdk:8
+
+ARG kafka_connect_version=6.1.0
+
+ENV KAFKA_CONNECT_VERSION=$kafka_connect_version \
+    KAFKA_CONNECT_HOME=/opt/confluent-$kafka_connect_version
+
+COPY ./kafka-connect-distributed.properties /connect-distributed.properties
+
+RUN apt-get update \
+    && apt-get install -y wget
+
+RUN wget http://packages.confluent.io/archive/6.1/confluent-community-${KAFKA_CONNECT_VERSION}.tar.gz \
+    && tar xvf confluent-community-${KAFKA_CONNECT_VERSION}.tar.gz -C /opt 
+
+RUN echo "#!/bin/bash \n $KAFKA_CONNECT_HOME/bin/connect-distributed /connect-distributed.properties" > ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]
