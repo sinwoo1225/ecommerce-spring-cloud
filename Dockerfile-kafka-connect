@@ -3,16 +3,32 @@ FROM azul/zulu-openjdk:8
 ARG kafka_connect_version=6.1.0
 
 ENV KAFKA_CONNECT_VERSION=$kafka_connect_version \
-    KAFKA_CONNECT_HOME=/opt/confluent-$kafka_connect_version
+    KAFKA_CONNECT_HOME=/opt/confluent
 
 COPY ./kafka-connect-distributed.properties /connect-distributed.properties
+COPY ./kafka-connect-lib /connect/lib
 
+# =============
+# wget install
+# =============
 RUN apt-get update \
     && apt-get install -y wget
 
+# ======================================
+# kafka connect install 
+# kafka connect in confluent-community
+# =======================================
 RUN wget http://packages.confluent.io/archive/6.1/confluent-community-${KAFKA_CONNECT_VERSION}.tar.gz \
-    && tar xvf confluent-community-${KAFKA_CONNECT_VERSION}.tar.gz -C /opt 
+    && mkdir -p /opt/confluent \
+    && tar xvf confluent-community-${KAFKA_CONNECT_VERSION}.tar.gz -C /opt/confluent  --strip-components 1
 
+# ======================================
+# mariadb jdbc install 
+# =======================================
+RUN wget https://downloads.mariadb.com/Connectors/java/connector-java-2.7.2/mariadb-java-client-2.7.2.jar \
+    && cp mariadb-java-client-*.jar $KAFKA_CONNECT_HOME/share/java/kafka
+
+# RUN Kafka Connect
 RUN echo "#!/bin/bash \n $KAFKA_CONNECT_HOME/bin/connect-distributed /connect-distributed.properties" > ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]

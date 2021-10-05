@@ -12,6 +12,8 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=siru
       - RABBITMQ_DEFAULT_PASS=siru@dev1
+    networks:
+      - dev-net
   
   mariadb:
     image: mariadb
@@ -20,6 +22,8 @@ services:
       - "3306:3306"
     environment:
       - MARIADB_ROOT_PASSWORD=siru@dev1
+    networks:
+      - dev-net
       
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
