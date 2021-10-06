@@ -44,3 +44,7 @@ dependencyManagement {
 test {
     useJUnitPlatform()
 }
+
+bootRun {
+    jvmArgs = ["-Dspring.output.ansi.enabled=ALWAYS"]
+}
