@@ -3,7 +3,8 @@ package siru.userservice.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.core.env.Environment;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder passwordEncoder;
     private final OrderServiceClient orderServiceClient;
+    private final CircuitBreakerFactory circuitBreakerFactory;
 //    private final RestTemplate restTemplate;
 
     @Override
@@ -82,7 +84,12 @@ public class UserServiceImpl implements UserService {
 //        }
 
         /* Using as feign client with error decoder */
-        List<ResponseOrder> orderList = orderServiceClient.getOrders(userId);
+//        List<ResponseOrder> orderList = orderServiceClient.getOrders(userId);
+
+        /* Using as feign client with circuit breaker */
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
+        List<ResponseOrder> orderList = circuitBreaker.run(()-> orderServiceClient.getOrders(userId),
+                throwable -> new ArrayList<>());
         userDto.setOrderList(orderList);
 
         return userDto;
