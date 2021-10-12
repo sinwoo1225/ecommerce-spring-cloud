@@ -64,3 +64,10 @@ services:
       - kafka
     networks:
       - dev-net
+
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - dev-net
