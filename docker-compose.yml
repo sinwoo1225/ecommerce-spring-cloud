@@ -27,6 +27,7 @@ services:
       
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -69,5 +70,25 @@ services:
     image: openzipkin/zipkin
     ports:
       - "9411:9411"
+    networks:
+      - dev-net
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - dev-net
+
+  grapana:
+    image: grafana/grafana
+    container_name: grapana
+    depends_on:
+      - prometheus
+    ports: 
+      - "3000:3000"
     networks:
       - dev-net

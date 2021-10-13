@@ -1,5 +1,6 @@
 package siru.userservice.controller;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -26,6 +27,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/health_check")
+    @Timed(value = "users.status", longTask = true)
     public String status() {
         return"It`s Working on User Service"
                 + ", port(local.server.port)=" + env.getProperty("local.server.port")
@@ -35,6 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/welcome")
+    @Timed(value = "users.welcome", longTask = true)
     public String welcome() {
         return env.getProperty("greeting.message");
     }

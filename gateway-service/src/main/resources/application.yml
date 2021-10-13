@@ -99,6 +99,14 @@ spring:
             - AddRequestHeader=order-request, order-reqeust-header
             - AddResponseHeader=order-response, order-response-header
             - CustomFilter
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/order-service/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
 
 # config server를 사용하기 때문에 필요없음
 # token:
@@ -109,4 +117,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: info, refresh, health, beans, httpTrace, busrefresh
+        include: info, refresh, health, beans, httpTrace, busrefresh, threaddump, metrics, prometheus

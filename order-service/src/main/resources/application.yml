@@ -27,6 +27,11 @@ spring:
 #    username: root
 #    password: siru@dev1
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, threaddump, info, metrics, prometheus
 
 eureka:
   instance:

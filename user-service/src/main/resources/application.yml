@@ -42,7 +42,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, busrefresh
+        include: refresh, health, beans, busrefresh, threaddump, info, metrics, prometheus
 
 # config 서버를 쓰기 때문에 불필요
 #token:
